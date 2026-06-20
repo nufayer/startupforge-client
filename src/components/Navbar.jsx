@@ -3,28 +3,35 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
+import { useSession, signOut } from "@/lib/auth.client";
 
 export default function AppNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session, isPending } = useSession();
 
-  const menuItems = [
-    {
-      name: "Home",
-      href: "/",
-    },
-    {
-      name: "Browse Startups",
-      href: "/startups",
-    },
-    {
-      name: "Browse Opportunities",
-      href: "/opportunities",
-    },
-    {
-      name: "Login",
-      href: "/login",
-    },
-  ];
+  const handleLogout = async () => {
+    await signOut({
+      onSuccess: () => {
+        window.location.href = "/";
+      }
+    });
+  };
+
+  const getMenuItems = () => {
+    const items = [
+      { name: "Home", href: "/" },
+      { name: "Browse Startups", href: "/startups" },
+      { name: "Browse Opportunities", href: "/opportunities" },
+    ];
+    if (session) {
+      items.push({ name: "Dashboard", href: "/dashboard" });
+      items.push({ name: "Profile", href: "/profile" });
+    } else {
+      items.push({ name: "Login", href: "/auth/signin" });
+      items.push({ name: "Register", href: "/auth/signup" });
+    }
+    return items;
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
@@ -77,19 +84,77 @@ export default function AppNavbar() {
           >
             Browse Opportunities
           </Link>
+          {session && (
+            <>
+              <Link
+                href="/dashboard"
+                className="text-zinc-300 hover:text-white text-sm font-medium"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/profile"
+                className="text-zinc-300 hover:text-white text-sm font-medium"
+              >
+                Profile
+              </Link>
+            </>
+          )}
         </div>
 
-        {/* Login Button */}
+        {/* Login / User Status */}
         <div className="flex items-center">
           <div className="hidden sm:block">
-            <Button
-              as={Link}
-              href="/login"
-              color="primary"
-              variant="shadow"
-            >
-              Login
-            </Button>
+            {isPending ? (
+              <div className="w-8 h-8 rounded-full border border-zinc-800 animate-pulse bg-zinc-900" />
+            ) : session ? (
+              <div className="flex items-center gap-3">
+                {session.user.image ? (
+                  <img
+                    src={session.user.image}
+                    alt={session.user.name}
+                    className="w-8 h-8 rounded-full object-cover border border-zinc-800"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-violet-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white">
+                    {session.user.name?.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="text-zinc-300 text-sm font-medium hidden md:inline-block">
+                  {session.user.name}
+                </span>
+                <Button
+                  color="danger"
+                  variant="flat"
+                  size="sm"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Button
+                  as={Link}
+                  href="/auth/signin"
+                  color="default"
+                  variant="light"
+                  size="sm"
+                  className="text-zinc-300"
+                >
+                  Login
+                </Button>
+                <Button
+                  as={Link}
+                  href="/auth/signup"
+                  color="primary"
+                  variant="shadow"
+                  size="sm"
+                >
+                  Register
+                </Button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -98,7 +163,7 @@ export default function AppNavbar() {
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
         <div className="sm:hidden border-t border-zinc-800 bg-zinc-950 px-6 py-4 space-y-3 absolute top-16 left-0 w-full shadow-lg">
-          {menuItems.map((item) => (
+          {getMenuItems().map((item) => (
             <div key={item.name}>
               <Link
                 href={item.href}
@@ -109,6 +174,17 @@ export default function AppNavbar() {
               </Link>
             </div>
           ))}
+          {session && (
+            <button
+              onClick={() => {
+                setIsMenuOpen(false);
+                handleLogout();
+              }}
+              className="block w-full py-2 text-left text-base text-red-400 hover:text-red-300 font-medium"
+            >
+              Logout
+            </button>
+          )}
         </div>
       )}
     </nav>
