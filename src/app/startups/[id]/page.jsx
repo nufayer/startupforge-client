@@ -21,13 +21,13 @@ export default function StartupDetailsPage({ params }) {
       setError("");
 
       // Startup doc
-      const sRes = await fetch(`/api/startups/${encodeURIComponent(id)}`);
+      const sRes = await fetch(`http://localhost:5000/startups/${encodeURIComponent(id)}`);
       const sJson = await sRes.json().catch(() => ({}));
       if (!sRes.ok) throw new Error(sJson?.message || "Failed to load startup");
       setStartup(sJson?.startup || sJson);
 
       // Opportunities for this startup (public browse)
-      const oRes = await fetch(`/api/opportunities?startupId=${encodeURIComponent(id)}`);
+      const oRes = await fetch(`http://localhost:5000/opportunities?startupId=${encodeURIComponent(id)}`);
       const oJson = await oRes.json().catch(() => ({}));
       if (!oRes.ok) throw new Error(oJson?.message || "Failed to load opportunities");
       setOpportunities(Array.isArray(oJson?.opportunities) ? oJson.opportunities : []);

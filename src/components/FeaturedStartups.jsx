@@ -9,7 +9,7 @@ export default function FeaturedStartups() {
   const [startups, setStartups] = useState([]);
 
   useEffect(() => {
-    fetch("/api/startups")
+    fetch("http://localhost:5000/startups")
       .then((r) => r.json())
       .then((j) => {
         const list = Array.isArray(j?.startups) ? j.startups : [];

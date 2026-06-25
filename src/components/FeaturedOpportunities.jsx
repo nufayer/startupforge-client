@@ -9,7 +9,7 @@ export default function FeaturedOpportunities() {
   const [opportunities, setOpportunities] = useState([]);
 
   useEffect(() => {
-    fetch("/api/opportunities")
+    fetch("http://localhost:5000/opportunities")
       .then((r) => r.json())
       .then((j) => {
         const list = Array.isArray(j?.opportunities) ? j.opportunities : [];

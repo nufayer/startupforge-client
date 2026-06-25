@@ -50,14 +50,14 @@ export default function AdminDashboard() {
   // --- Data Fetching ---
   const fetchStats = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/stats");
+      const res = await fetch("http://localhost:5000/admin/stats");
       if (res.ok) setStats(await res.json());
     } catch {}
   }, []);
 
   const fetchUsers = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/users");
+      const res = await fetch("http://localhost:5000/admin/users");
       if (res.ok) {
         const data = await res.json();
         setUsers(data.users || []);
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
 
   const fetchStartups = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/startups");
+      const res = await fetch("http://localhost:5000/admin/startups");
       if (res.ok) {
         const data = await res.json();
         setStartups(data.startups || []);
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
 
   const fetchTransactions = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/transactions");
+      const res = await fetch("http://localhost:5000/admin/transactions");
       if (res.ok) {
         const data = await res.json();
         setTransactions(data.transactions || []);
@@ -106,7 +106,7 @@ export default function AdminDashboard() {
   const handleBlockUser = async (userId, currentBanned) => {
     setUpdatingUserId(userId);
     try {
-      await fetch(`/api/admin/users/${encodeURIComponent(userId)}/block`, {
+      await fetch(`http://localhost:5000/admin/users/${encodeURIComponent(userId)}/block`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ banned: !currentBanned }),
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
   const handleStartupStatus = async (startupId, status) => {
     setUpdatingStartupId(startupId);
     try {
-      await fetch(`/api/admin/startups/${encodeURIComponent(startupId)}/status`, {
+      await fetch(`http://localhost:5000/admin/startups/${encodeURIComponent(startupId)}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),

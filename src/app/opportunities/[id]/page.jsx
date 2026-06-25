@@ -34,7 +34,7 @@ export default function OpportunityDetailsPage({ params }) {
         setLoading(true);
         setError("");
 
-        const res = await fetch(`/api/opportunities/${encodeURIComponent(id)}`);
+        const res = await fetch(`http://localhost:5000/opportunities/${encodeURIComponent(id)}`);
         const j = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(j?.message || "Failed to load opportunity");
 
@@ -77,9 +77,12 @@ export default function OpportunityDetailsPage({ params }) {
 
     try {
       setApplyStatus("submitting");
-      const res = await fetch("/api/applications", {
+      const res = await fetch("http://localhost:5000/applications", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-email": userEmail,
+        },
         body: JSON.stringify({
           opportunityId: id,
           Portfolio_link: portfolioLink,

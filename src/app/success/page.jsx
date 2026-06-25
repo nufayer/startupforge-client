@@ -20,9 +20,12 @@ function SuccessContent() {
 
     const verify = async () => {
       try {
-        const res = await fetch("/api/verify-payment", {
+        const res = await fetch("http://localhost:5000/verify-payment", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "x-user-email": session?.user?.email || "",
+          },
           body: JSON.stringify({ session_id: sessionId }),
         });
 
