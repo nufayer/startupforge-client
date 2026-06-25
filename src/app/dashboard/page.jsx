@@ -342,7 +342,7 @@ export default function DashboardPage() {
         <AlertCircle className="text-red-500 w-16 h-16 mb-4" />
         <h2 className="text-2xl font-bold mb-2">Access Denied</h2>
         <p className="text-zinc-400 max-w-md mb-6">You must be signed in to access the dashboard.</p>
-        <Button as={Link} href="/auth/signin" color="primary">Go to Login</Button>
+        <Link href="/auth/signin"><Button color="primary">Go to Login</Button></Link>
       </div>
     );
   }
@@ -957,12 +957,12 @@ export default function DashboardPage() {
                     Browse startups looking for collaborators like you.
                   </p>
                   <div className="flex gap-3">
-                    <Button as={Link} href="/opportunities" color="primary">
-                      Browse Opportunities
-                    </Button>
-                    <Button as={Link} href="/startups" variant="bordered">
-                      Browse Startups
-                    </Button>
+                    <Link href="/opportunities">
+                      <Button color="primary">Browse Opportunities</Button>
+                    </Link>
+                    <Link href="/startups">
+                      <Button variant="bordered">Browse Startups</Button>
+                    </Link>
                   </div>
                 </Card>
               </div>

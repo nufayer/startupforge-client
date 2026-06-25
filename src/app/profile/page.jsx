@@ -49,9 +49,9 @@ export default function ProfilePage() {
         <p className="text-zinc-400 max-w-md mb-6">
           You must be signed in to view your profile.
         </p>
-        <Button as={Link} href="/auth/signin" color="primary">
-          Go to Login
-        </Button>
+        <Link href="/auth/signin">
+          <Button color="primary">Go to Login</Button>
+        </Link>
       </div>
     );
   }

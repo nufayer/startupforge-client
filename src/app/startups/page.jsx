@@ -64,9 +64,9 @@ export default function BrowseStartupsPage() {
                       </span>
                     </div>
                     <div className="mt-4">
-                      <Button as={Link} href={`/startups/${encodeURIComponent(String(s._id))}`} color="primary">
-                        View Details
-                      </Button>
+                      <Link href={`/startups/${encodeURIComponent(String(s._id))}`}>
+                        <Button color="primary">View Details</Button>
+                      </Link>
                     </div>
                   </div>
                 </div>

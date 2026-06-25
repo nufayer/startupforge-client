@@ -5,7 +5,7 @@ import { ObjectId } from "mongodb";
 
 export async function GET(req, { params }) {
   try {
-    const id = params.id;
+    const { id } = await params;
     if (!ObjectId.isValid(id)) {
       return NextResponse.json({ message: "Invalid id" }, { status: 400 });
     }
@@ -35,7 +35,7 @@ export async function PUT(req, { params }) {
     if (!user) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     if (user.role !== "Founder") return NextResponse.json({ message: "Forbidden" }, { status: 403 });
 
-    const id = params.id;
+    const { id } = await params;
     if (!ObjectId.isValid(id)) {
       return NextResponse.json({ message: "Invalid id" }, { status: 400 });
     }
@@ -83,7 +83,7 @@ export async function DELETE(req, { params }) {
     if (!user) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     if (user.role !== "Founder") return NextResponse.json({ message: "Forbidden" }, { status: 403 });
 
-    const id = params.id;
+    const { id } = await params;
     if (!ObjectId.isValid(id)) {
       return NextResponse.json({ message: "Invalid id" }, { status: 400 });
     }

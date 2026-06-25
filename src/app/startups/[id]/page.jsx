@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState, use } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Card, Button, Input } from "@heroui/react";
-import { Briefcase, Globe, CalendarDays, Users, ArrowLeft } from "lucide-react";
+import { Card, Button } from "@heroui/react";
+import { Briefcase, CalendarDays, Users, ArrowLeft } from "lucide-react";
 
 export default function StartupDetailsPage({ params }) {
+  const { id } = use(params);
   const router = useRouter();
-  const { id } = params;
 
   const [startup, setStartup] = useState(null);
   const [opportunities, setOpportunities] = useState([]);

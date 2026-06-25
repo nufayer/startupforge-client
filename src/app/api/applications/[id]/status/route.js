@@ -11,7 +11,7 @@ export async function PUT(req, { params }) {
     if (!user) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     if (user.role !== "Founder") return NextResponse.json({ message: "Forbidden" }, { status: 403 });
 
-    const id = params.id;
+    const { id } = await params;
     if (!ObjectId.isValid(id)) return NextResponse.json({ message: "Invalid application id" }, { status: 400 });
 
     const body = await req.json();

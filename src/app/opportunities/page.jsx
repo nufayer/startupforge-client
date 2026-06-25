@@ -96,9 +96,9 @@ export default function BrowseOpportunitiesPage() {
                   ) : null}
 
                   <div className="pt-2">
-                    <Button as={Link} href={`/opportunities/${encodeURIComponent(String(o._id))}`} color="primary">
-                      View Opportunity
-                    </Button>
+                    <Link href={`/opportunities/${encodeURIComponent(String(o._id))}`}>
+                      <Button color="primary">View Opportunity</Button>
+                    </Link>
                   </div>
                 </div>
               </Card>
