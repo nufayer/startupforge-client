@@ -13,12 +13,28 @@ export async function GET(req) {
     const colOpp = db.collection(collections.opportunities);
     const colStartups = db.collection(collections.startups);
 
-    // Public browse - list all open opportunities
+    // Public browse - list all open opportunities with startup info
     if (!startupId) {
-      const opportunities = await colOpp
-        .find({ status: "Open" })
-        .sort({ updated_at: -1 })
-        .toArray();
+      const pipeline = [
+        { $match: { status: "Open" } },
+        {
+          $lookup: {
+            from: collections.startups,
+            localField: "startup_id",
+            foreignField: "_id",
+            as: "startup",
+          },
+        },
+        { $unwind: { path: "$startup", preserveNullAndEmptyArrays: true } },
+        {
+          $addFields: {
+            industry: "$startup.industry",
+            startup_name: "$startup.startup_name",
+          },
+        },
+        { $sort: { updated_at: -1 } },
+      ];
+      const opportunities = await colOpp.aggregate(pipeline).toArray();
       return NextResponse.json({ opportunities });
     }
 

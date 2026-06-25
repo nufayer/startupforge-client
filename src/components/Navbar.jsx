@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { useSession, signOut } from "@/lib/auth.client";
+import { Shield } from "lucide-react";
 
 export default function AppNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +25,11 @@ export default function AppNavbar() {
       { name: "Browse Opportunities", href: "/opportunities" },
     ];
     if (session) {
-      items.push({ name: "Dashboard", href: "/dashboard" });
+      if (session.user.role === "Admin") {
+        items.push({ name: "Admin Dashboard", href: "/admin/dashboard" });
+      } else {
+        items.push({ name: "Dashboard", href: "/dashboard" });
+      }
       items.push({ name: "Profile", href: "/profile" });
     } else {
       items.push({ name: "Login", href: "/auth/signin" });
@@ -86,12 +91,22 @@ export default function AppNavbar() {
           </Link>
           {session && (
             <>
-              <Link
-                href="/dashboard"
-                className="text-zinc-300 hover:text-white text-sm font-medium"
-              >
-                Dashboard
-              </Link>
+              {session.user.role === "Admin" ? (
+                <Link
+                  href="/admin/dashboard"
+                  className="text-red-400 hover:text-red-300 text-sm font-medium flex items-center gap-1"
+                >
+                  <Shield size={14} />
+                  Admin Dashboard
+                </Link>
+              ) : (
+                <Link
+                  href="/dashboard"
+                  className="text-zinc-300 hover:text-white text-sm font-medium"
+                >
+                  Dashboard
+                </Link>
+              )}
               <Link
                 href="/profile"
                 className="text-zinc-300 hover:text-white text-sm font-medium"
