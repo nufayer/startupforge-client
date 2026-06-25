@@ -6,10 +6,6 @@ const client = new MongoClient(process.env.MONGO_DB_URI);
 const db = client.db(process.env.AUTH_DB_NAME);
 
 export const auth = betterAuth({
-    // These options are required for cookie/session handling in Next.js.
-    // Set them in your .env.local:
-    // - NEXT_PUBLIC_APP_URL (e.g. http://localhost:3000)
-    // - AUTH_SECRET (any long random string)
     baseURL: process.env.BETTER_AUTH_URL,
     secret: process.env.BETTER_AUTH_SECRET,
 
@@ -25,6 +21,12 @@ export const auth = betterAuth({
                 type: "string",
                 required: false,
                 defaultValue: "Collaborator",
+                input: true,
+            },
+            plan: {
+                type: "string",
+                required: false,
+                defaultValue: "Free",
                 input: true,
             },
         },

@@ -24,6 +24,7 @@ import {
   CalendarDays,
   Edit,
   ExternalLink,
+  Crown,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -86,6 +87,26 @@ export default function DashboardPage() {
 
   const userEmail = session?.user?.email ? String(session.user.email).trim().toLowerCase() : "";
   const role = session?.user?.role || "Collaborator";
+  const userPlan = session?.user?.plan || "Free";
+  const isFreePlan = userPlan === "Free";
+  const atPlanLimit = isFreePlan && opportunities.length >= 3;
+
+  // --- Checkout ---
+  const handlePurchasePremium = async () => {
+    try {
+      const res = await fetch("/checkout_sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userEmail }),
+      });
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (e) {
+      console.error("Checkout error:", e);
+    }
+  };
 
   // --- Data fetching ---
   const fetchFounderData = useCallback(async () => {
@@ -480,6 +501,22 @@ export default function DashboardPage() {
             </div>
           </div>
 
+          {/* Premium Upgrade Banner */}
+          {isFreePlan && (
+            <div className="mb-8 rounded-xl bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Crown className="text-yellow-400" size={24} />
+                <div>
+                  <p className="font-semibold text-yellow-300">Free Plan — {opportunities.length}/3 opportunities used</p>
+                  <p className="text-sm text-zinc-400">Upgrade to Premium for unlimited opportunity postings.</p>
+                </div>
+              </div>
+              <Button color="warning" size="sm" startContent={<Crown size={16} />} onClick={handlePurchasePremium}>
+                Purchase Premium
+              </Button>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Sidebar */}
             <div className="flex flex-col gap-2">
@@ -661,7 +698,20 @@ export default function DashboardPage() {
               {/* Tab: Add Opportunity */}
               {activeTab === "add-opportunity" && (
                 <Card className="bg-zinc-950 border border-zinc-800 p-8">
-                  <h3 className="text-xl font-bold mb-6">Post a New Opportunity</h3>
+                  {atPlanLimit ? (
+                    <div className="text-center py-8">
+                      <Crown className="text-yellow-400 mx-auto mb-4" size={48} />
+                      <h3 className="text-xl font-bold mb-2">Free Plan Limit Reached</h3>
+                      <p className="text-zinc-400 mb-6">
+                        You&apos;ve posted 3 opportunities on the Free plan. Upgrade to Premium for unlimited postings.
+                      </p>
+                      <Button color="warning" size="lg" startContent={<Crown size={18} />} onClick={handlePurchasePremium}>
+                        Purchase Premium
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <h3 className="text-xl font-bold mb-6">Post a New Opportunity</h3>
 
                   {opportunityError && (
                     <div className="mb-4 rounded-xl bg-red-500/10 border border-red-500/30 p-3 text-sm text-red-400">{opportunityError}</div>
@@ -728,6 +778,8 @@ export default function DashboardPage() {
                       Publish Opportunity
                     </Button>
                   </form>
+                    </>
+                  )}
                 </Card>
               )}
 
@@ -736,10 +788,23 @@ export default function DashboardPage() {
                 <Card className="bg-zinc-950 border border-zinc-800 p-6 overflow-x-auto">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-bold">Manage Opportunities</h3>
-                    <Button size="sm" color="primary" variant="flat" startContent={<Plus size={14} />} onClick={() => setActiveTab("add-opportunity")}>
-                      New
+                    <Button
+                      size="sm"
+                      color={atPlanLimit ? "warning" : "primary"}
+                      variant="flat"
+                      startContent={atPlanLimit ? <Crown size={14} /> : <Plus size={14} />}
+                      onClick={() => atPlanLimit ? handlePurchasePremium() : setActiveTab("add-opportunity")}
+                    >
+                      {atPlanLimit ? "Upgrade" : "New"}
                     </Button>
                   </div>
+
+                  {atPlanLimit && (
+                    <div className="mb-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30 p-3 text-sm text-yellow-400 flex items-center gap-2">
+                      <Crown size={16} />
+                      Free plan limit reached (3/3). Upgrade to add more opportunities.
+                    </div>
+                  )}
 
                   {opportunities.length === 0 ? (
                     <p className="text-zinc-500 text-center py-6">No opportunities published yet.</p>
