@@ -134,25 +134,25 @@ export default function AppNavbar() {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Button
-                  as={Link}
-                  href="/auth/signin"
-                  color="default"
-                  variant="light"
-                  size="sm"
-                  className="text-zinc-300"
-                >
-                  Login
-                </Button>
-                <Button
-                  as={Link}
-                  href="/auth/signup"
-                  color="primary"
-                  variant="shadow"
-                  size="sm"
-                >
-                  Register
-                </Button>
+                <Link href="/auth/signin">
+                  <Button
+                    color="default"
+                    variant="light"
+                    size="sm"
+                    className="text-zinc-300"
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/auth/signup">
+                  <Button
+                    color="primary"
+                    variant="shadow"
+                    size="sm"
+                  >
+                    Register
+                  </Button>
+                </Link>
               </div>
             )}
           </div>
