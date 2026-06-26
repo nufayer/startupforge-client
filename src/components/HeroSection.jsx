@@ -8,6 +8,8 @@ import {
   Users,
   TrendingUp,
 } from "lucide-react";
+import { motion } from "motion/react"
+
 
 export default function HeroSection() {
   return (
@@ -40,13 +42,13 @@ export default function HeroSection() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-            Build The Next
+          <motion.h1 className="text-5xl md:text-7xl font-bold leading-tight">
+           Build The Next
             <br />
             <span className="bg-gradient-to-r from-violet-400 to-purple-900 bg-clip-text text-transparent">
               Great Startup
             </span>
-          </h1>
+          </motion.h1>
 
           {/* Description */}
           <p className="mt-6 text-zinc-300 text-lg md:text-xl max-w-2xl leading-relaxed">

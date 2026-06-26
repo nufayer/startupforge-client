@@ -4,11 +4,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { useSession, signOut } from "@/lib/auth.client";
-import { Shield } from "lucide-react";
+import { useTheme } from "@/lib/ThemeContext";
+import { Shield, Sun, Moon } from "lucide-react";
 
 export default function AppNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session, isPending } = useSession();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     await signOut({
@@ -118,7 +120,14 @@ export default function AppNavbar() {
         </div>
 
         {/* Login / User Status */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+            aria-label="Toggle Theme"
+          >
+            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           <div className="hidden sm:block">
             {isPending ? (
               <div className="w-8 h-8 rounded-full border border-zinc-800 animate-pulse bg-zinc-900" />
@@ -178,6 +187,13 @@ export default function AppNavbar() {
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
         <div className="sm:hidden border-t border-zinc-800 bg-zinc-950 px-6 py-4 space-y-3 absolute top-16 left-0 w-full shadow-lg">
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-2 py-2 text-base text-zinc-300 hover:text-white"
+          >
+            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </button>
           {getMenuItems().map((item) => (
             <div key={item.name}>
               <Link
