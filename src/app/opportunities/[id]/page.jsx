@@ -78,7 +78,7 @@ export default function OpportunityDetailsPage({ params }) {
 
     try {
       setApplyStatus("submitting");
-      const res = await fetch("${API_BASE}/applications", {
+      const res = await fetch(`${API_BASE}/applications`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

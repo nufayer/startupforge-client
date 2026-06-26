@@ -21,7 +21,7 @@ function SuccessContent() {
 
     const verify = async () => {
       try {
-        const res = await fetch("${API_BASE}/verify-payment", {
+        const res = await fetch(`${API_BASE}/verify-payment`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

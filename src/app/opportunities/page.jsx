@@ -20,7 +20,7 @@ export default function BrowseOpportunitiesPage() {
       try {
         setLoading(true);
         setError("");
-        const res = await fetch("${API_BASE}/opportunities");
+        const res = await fetch(`${API_BASE}/opportunities`);
         const j = await res.json();
         if (!res.ok) throw new Error(j?.message || "Failed to load opportunities");
         setOpportunities(Array.isArray(j?.opportunities) ? j.opportunities : []);

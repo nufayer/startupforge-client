@@ -95,7 +95,7 @@ export default function DashboardPage() {
   // --- Checkout ---
   const handlePurchasePremium = async () => {
     try {
-      const res = await fetch("${API_BASE}/checkout_sessions", {
+      const res = await fetch(`${API_BASE}/checkout_sessions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail }),
@@ -186,7 +186,7 @@ export default function DashboardPage() {
     try {
       const formData = new FormData();
       formData.append("image", file);
-      const res = await fetch("${API_BASE}/upload-image", { method: "POST", body: formData });
+      const res = await fetch(`${API_BASE}/upload-image`, { method: "POST", body: formData });
       const json = await res.json();
       if (!res.ok) throw new Error(json?.message || "Upload failed");
       return json.url;
@@ -222,7 +222,7 @@ export default function DashboardPage() {
     }
     setCreatingStartup(true);
     try {
-      const res = await fetch("${API_BASE}/startups", {
+      const res = await fetch(`${API_BASE}/startups`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -299,7 +299,7 @@ export default function DashboardPage() {
     }
     setCreatingOpportunity(true);
     try {
-      const res = await fetch("${API_BASE}/opportunities", {
+      const res = await fetch(`${API_BASE}/opportunities`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

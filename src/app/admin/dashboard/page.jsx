@@ -51,14 +51,14 @@ export default function AdminDashboard() {
   // --- Data Fetching ---
   const fetchStats = useCallback(async () => {
     try {
-      const res = await fetch("${API_BASE}/admin/stats");
+      const res = await fetch(`${API_BASE}/admin/stats`);
       if (res.ok) setStats(await res.json());
     } catch {}
   }, []);
 
   const fetchUsers = useCallback(async () => {
     try {
-      const res = await fetch("${API_BASE}/admin/users");
+      const res = await fetch(`${API_BASE}/admin/users`);
       if (res.ok) {
         const data = await res.json();
         setUsers(data.users || []);
@@ -68,7 +68,7 @@ export default function AdminDashboard() {
 
   const fetchStartups = useCallback(async () => {
     try {
-      const res = await fetch("${API_BASE}/admin/startups");
+      const res = await fetch(`${API_BASE}/admin/startups`);
       if (res.ok) {
         const data = await res.json();
         setStartups(data.startups || []);
@@ -78,7 +78,7 @@ export default function AdminDashboard() {
 
   const fetchTransactions = useCallback(async () => {
     try {
-      const res = await fetch("${API_BASE}/admin/transactions");
+      const res = await fetch(`${API_BASE}/admin/transactions`);
       if (res.ok) {
         const data = await res.json();
         setTransactions(data.transactions || []);

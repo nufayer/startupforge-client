@@ -16,7 +16,7 @@ export default function BrowseStartupsPage() {
       try {
         setLoading(true);
         setError("");
-        const res = await fetch("${API_BASE}/startups");
+        const res = await fetch(`${API_BASE}/startups`);
         const j = await res.json();
         if (!res.ok) throw new Error(j?.message || "Failed to load startups");
         setStartups(Array.isArray(j?.startups) ? j.startups : []);
