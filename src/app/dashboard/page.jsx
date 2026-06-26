@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button, Card, Input } from "@heroui/react";
 import { useSession } from "@/lib/auth.client";
+import { API_BASE } from "@/lib/api";
 import {
   Rocket,
   Briefcase,
@@ -94,7 +95,7 @@ export default function DashboardPage() {
   // --- Checkout ---
   const handlePurchasePremium = async () => {
     try {
-      const res = await fetch("http://localhost:5000/checkout_sessions", {
+      const res = await fetch("${API_BASE}/checkout_sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail }),
@@ -113,7 +114,7 @@ export default function DashboardPage() {
     if (!userEmail || role !== "Founder") return;
     setStartupLoading(true);
     try {
-      const sRes = await fetch(`http://localhost:5000/startups?founderEmail=${encodeURIComponent(userEmail)}`);
+      const sRes = await fetch(`${API_BASE}/startups?founderEmail=${encodeURIComponent(userEmail)}`);
       const sJson = await sRes.json();
       const startups = sJson?.startups || [];
       const myStartup = startups.find((s) => s.founder_email === userEmail && s.status !== "Deleted") || null;
@@ -131,10 +132,10 @@ export default function DashboardPage() {
         });
 
         const [oppRes, appRes] = await Promise.all([
-          fetch(`http://localhost:5000/opportunities?startupId=${encodeURIComponent(myStartup._id)}&founderView=true`, {
+          fetch(`${API_BASE}/opportunities?startupId=${encodeURIComponent(myStartup._id)}&founderView=true`, {
             headers: { "x-user-email": userEmail },
           }),
-          fetch(`http://localhost:5000/applications?startupId=${encodeURIComponent(myStartup._id)}`, {
+          fetch(`${API_BASE}/applications?startupId=${encodeURIComponent(myStartup._id)}`, {
             headers: { "x-user-email": userEmail },
           }),
         ]);
@@ -155,7 +156,7 @@ export default function DashboardPage() {
   const fetchCollaboratorData = useCallback(async () => {
     if (!userEmail || role !== "Collaborator") return;
     try {
-      const res = await fetch(`http://localhost:5000/applications?applicantEmail=${encodeURIComponent(userEmail)}`, {
+      const res = await fetch(`${API_BASE}/applications?applicantEmail=${encodeURIComponent(userEmail)}`, {
         headers: { "x-user-email": userEmail },
       });
       const json = await res.json();
@@ -185,7 +186,7 @@ export default function DashboardPage() {
     try {
       const formData = new FormData();
       formData.append("image", file);
-      const res = await fetch("http://localhost:5000/upload-image", { method: "POST", body: formData });
+      const res = await fetch("${API_BASE}/upload-image", { method: "POST", body: formData });
       const json = await res.json();
       if (!res.ok) throw new Error(json?.message || "Upload failed");
       return json.url;
@@ -221,7 +222,7 @@ export default function DashboardPage() {
     }
     setCreatingStartup(true);
     try {
-      const res = await fetch("http://localhost:5000/startups", {
+      const res = await fetch("${API_BASE}/startups", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -251,7 +252,7 @@ export default function DashboardPage() {
     setUpdateError("");
     setUpdatingStartup(true);
     try {
-      const res = await fetch(`http://localhost:5000/startups/${encodeURIComponent(startup._id)}`, {
+      const res = await fetch(`${API_BASE}/startups/${encodeURIComponent(startup._id)}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editStartup),
@@ -272,7 +273,7 @@ export default function DashboardPage() {
     if (!startup) return;
     if (!confirm("Are you sure you want to delete your startup? This action cannot be undone.")) return;
     try {
-      const res = await fetch(`http://localhost:5000/startups/${encodeURIComponent(startup._id)}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE}/startups/${encodeURIComponent(startup._id)}`, { method: "DELETE" });
       if (!res.ok) {
         const json = await res.json();
         throw new Error(json?.message || "Failed to delete startup");
@@ -298,7 +299,7 @@ export default function DashboardPage() {
     }
     setCreatingOpportunity(true);
     try {
-      const res = await fetch("http://localhost:5000/opportunities", {
+      const res = await fetch("${API_BASE}/opportunities", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -325,7 +326,7 @@ export default function DashboardPage() {
   const handleDeleteOpportunity = async (id) => {
     setDeletingOppId(id);
     try {
-      const res = await fetch(`http://localhost:5000/opportunities/${encodeURIComponent(id)}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE}/opportunities/${encodeURIComponent(id)}`, { method: "DELETE" });
       if (!res.ok) {
         const json = await res.json();
         throw new Error(json?.message || "Failed to delete");
@@ -342,7 +343,7 @@ export default function DashboardPage() {
   const handleApplicationStatus = async (appId, status) => {
     setUpdatingAppId(appId);
     try {
-      const res = await fetch(`http://localhost:5000/applications/${encodeURIComponent(appId)}/status`, {
+      const res = await fetch(`${API_BASE}/applications/${encodeURIComponent(appId)}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ Status: status }),

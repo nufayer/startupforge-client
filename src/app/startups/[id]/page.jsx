@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, Button } from "@heroui/react";
 import { Briefcase, CalendarDays, Users, ArrowLeft } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 export default function StartupDetailsPage({ params }) {
   const { id } = use(params);
@@ -21,13 +22,13 @@ export default function StartupDetailsPage({ params }) {
       setError("");
 
       // Startup doc
-      const sRes = await fetch(`http://localhost:5000/startups/${encodeURIComponent(id)}`);
+      const sRes = await fetch(`${API_BASE}/startups/${encodeURIComponent(id)}`);
       const sJson = await sRes.json().catch(() => ({}));
       if (!sRes.ok) throw new Error(sJson?.message || "Failed to load startup");
       setStartup(sJson?.startup || sJson);
 
       // Opportunities for this startup (public browse)
-      const oRes = await fetch(`http://localhost:5000/opportunities?startupId=${encodeURIComponent(id)}`);
+      const oRes = await fetch(`${API_BASE}/opportunities?startupId=${encodeURIComponent(id)}`);
       const oJson = await oRes.json().catch(() => ({}));
       if (!oRes.ok) throw new Error(oJson?.message || "Failed to load opportunities");
       setOpportunities(Array.isArray(oJson?.opportunities) ? oJson.opportunities : []);

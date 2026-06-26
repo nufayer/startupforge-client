@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button, Card, Input } from "@heroui/react";
 import { useSession } from "@/lib/auth.client";
 import { Briefcase, Users, CalendarDays, ArrowLeft, Shield, CheckCircle } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 export default function OpportunityDetailsPage({ params }) {
   const { id } = use(params);
@@ -34,7 +35,7 @@ export default function OpportunityDetailsPage({ params }) {
         setLoading(true);
         setError("");
 
-        const res = await fetch(`http://localhost:5000/opportunities/${encodeURIComponent(id)}`);
+        const res = await fetch(`${API_BASE}/opportunities/${encodeURIComponent(id)}`);
         const j = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(j?.message || "Failed to load opportunity");
 
@@ -77,7 +78,7 @@ export default function OpportunityDetailsPage({ params }) {
 
     try {
       setApplyStatus("submitting");
-      const res = await fetch("http://localhost:5000/applications", {
+      const res = await fetch("${API_BASE}/applications", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

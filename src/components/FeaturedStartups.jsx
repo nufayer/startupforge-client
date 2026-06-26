@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card, Button } from "@heroui/react";
 import { Rocket, Building } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 export default function FeaturedStartups() {
   const [startups, setStartups] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/startups")
+    fetch(`${API_BASE}/startups`)
       .then((r) => r.json())
       .then((j) => {
         const list = Array.isArray(j?.startups) ? j.startups : [];

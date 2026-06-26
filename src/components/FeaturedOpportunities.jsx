@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card, Button } from "@heroui/react";
 import { Briefcase } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 export default function FeaturedOpportunities() {
   const [opportunities, setOpportunities] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/opportunities")
+    fetch(`${API_BASE}/opportunities`)
       .then((r) => r.json())
       .then((j) => {
         const list = Array.isArray(j?.opportunities) ? j.opportunities : [];

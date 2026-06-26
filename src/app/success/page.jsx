@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button, Card } from "@heroui/react";
 import { CheckCircle, Rocket } from "lucide-react";
 import { useSession } from "@/lib/auth.client";
+import { API_BASE } from "@/lib/api";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -20,7 +21,7 @@ function SuccessContent() {
 
     const verify = async () => {
       try {
-        const res = await fetch("http://localhost:5000/verify-payment", {
+        const res = await fetch("${API_BASE}/verify-payment", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

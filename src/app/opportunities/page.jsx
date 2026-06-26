@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { Card, Button, Input } from "@heroui/react";
 import { Briefcase, Filter, X } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 export default function BrowseOpportunitiesPage() {
   const [opportunities, setOpportunities] = useState([]);
@@ -19,7 +20,7 @@ export default function BrowseOpportunitiesPage() {
       try {
         setLoading(true);
         setError("");
-        const res = await fetch("http://localhost:5000/opportunities");
+        const res = await fetch("${API_BASE}/opportunities");
         const j = await res.json();
         if (!res.ok) throw new Error(j?.message || "Failed to load opportunities");
         setOpportunities(Array.isArray(j?.opportunities) ? j.opportunities : []);

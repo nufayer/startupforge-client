@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card, Button } from "@heroui/react";
 import { Briefcase } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 export default function BrowseStartupsPage() {
   const [startups, setStartups] = useState([]);
@@ -15,7 +16,7 @@ export default function BrowseStartupsPage() {
       try {
         setLoading(true);
         setError("");
-        const res = await fetch("http://localhost:5000/startups");
+        const res = await fetch("${API_BASE}/startups");
         const j = await res.json();
         if (!res.ok) throw new Error(j?.message || "Failed to load startups");
         setStartups(Array.isArray(j?.startups) ? j.startups : []);
