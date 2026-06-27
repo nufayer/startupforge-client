@@ -111,6 +111,7 @@ export default function LoginPage() {
           className="space-y-4"
         >
           <div className="space-y-5">
+            <h2>Email</h2>
             <Input
               label="Email"
               type="email"
@@ -119,6 +120,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
+            <h2>Password</h2>
             <Input
               label="Password"
               variant="bordered"
