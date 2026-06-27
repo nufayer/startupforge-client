@@ -60,24 +60,24 @@ export default function HeroSection() {
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-10">
 
-            <Button
-              as={Link}
-              href="/startups"
-              size="lg"
-              className="font-semibold bg-purple-900"
-            >
-              Browse Startups
-            </Button>
+            <Link href="/startups">
+              <Button
+                size="lg"
+                className="font-semibold bg-purple-900"
+              >
+                Browse Startups
+              </Button>
+            </Link>
 
-            <Button
-              as={Link}
-              href="/opportunities"
-              size="lg"
-              variant="bordered"
-              className="border-zinc-600 text-white"
-            >
-              Explore Opportunities
-            </Button>
+            <Link href="/opportunities">
+              <Button
+                size="lg"
+                variant="bordered"
+                className="border-zinc-600 text-white"
+              >
+                Explore Opportunities
+              </Button>
+            </Link>
 
           </div>
 

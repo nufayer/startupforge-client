@@ -69,7 +69,7 @@ export default function AppNavbar() {
             href="/"
             className="flex items-center gap-2 font-bold text-xl text-white"
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500" />
+            <img src="/Logo.png" alt="StartupForge" className="h-16 w-16 rounded-lg object-cover" />
             StartupForge
           </Link>
         </div>
